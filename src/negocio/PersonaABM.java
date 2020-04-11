@@ -7,17 +7,25 @@ import modelo.Persona;
 
 public class PersonaABM {
 
-	private static PersonaABM instancia;
+	private static PersonaDao instancia;
+	private static PersonaABM instanciaABM;
 
 	protected PersonaABM() {
 		// this.inicializar(); Acá no se inicializa nada
 	}
 
-	public static PersonaABM getInstancia() {
+	public static PersonaDao getInstanciaDao() {
 		if (instancia == null) {
-			instancia = new PersonaABM();
+			instancia = new PersonaDao();
 		}
 		return instancia;
+	}
+	
+	public static PersonaABM getInstancia() {
+		if (instanciaABM == null) {
+			instanciaABM = new PersonaABM();
+		}
+		return instanciaABM;
 	}
 
 	public int agregar(String apellido, String nombre, int edad) throws Exception {
@@ -35,5 +43,16 @@ public class PersonaABM {
 	public List<Persona> traer() {
 		PersonaDao personaDao = new PersonaDao();
 		return personaDao.traer();
+	}
+	
+	public void actualizar(Persona persona) throws Exception {
+		if(getInstanciaDao().traer(persona.getApellido()) != null) {
+			throw new Exception("No se puede duplicar el Apellido");
+		}
+		getInstanciaDao().actualizar(persona);
+	}
+	
+	public void eliminar(Persona persona) {
+		getInstanciaDao().eliminar(persona);
 	}
 }

@@ -13,5 +13,7 @@
 		<!--Mapeo Entidades -->
 		<mapping resource="mapeos/Persona.hbm.xml" />
 		<mapping resource="mapeos/Contacto.hbm.xml" />
+		<mapping resource="mapeos/Prestamo.hbm.xml" />
+		<mapping resource="mapeos/Cuota.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
