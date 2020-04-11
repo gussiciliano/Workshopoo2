@@ -4,9 +4,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import modelo.Contacto;
+import modelo.Prestamo;
 
-public class ContactoDao {
+public class PrestamoDao { // Poner 'extends Dao<Prestamo>' para probar Generics con la Herencia de Dao
 	private static Session session;
 	private Transaction tx;
 
@@ -19,12 +19,16 @@ public class ContactoDao {
 		tx.rollback();
 		throw new HibernateException("ERROR en la capa de acceso a datos", he);
 	}
-
-	public int agregar(Contacto contacto) {
+	
+	public int agregar(Prestamo objeto) {
 		int id = 0;
 		try {
 			iniciaOperacion();
-			id = Integer.parseInt(session.save(contacto).toString());
+			id = Integer.parseInt(session.save(objeto).toString());
+			// Sin guardado en cascada
+			//for (Cuota cuota : objeto.getCuotas()) {
+			//	session.save(cuota);
+			//}
 			tx.commit();
 		} catch (HibernateException he) {
 			manejaExcepcion(he);
@@ -34,16 +38,4 @@ public class ContactoDao {
 		}
 		return id;
 	}
-
-	public Contacto traer(long idContacto) throws HibernateException {
-		Contacto objeto = null;
-		try {
-			iniciaOperacion();
-			objeto = (Contacto) session.get(Contacto.class, idContacto);
-		} finally {
-			session.close();
-		}
-		return objeto;
-	}
-	
 }
